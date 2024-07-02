@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
 public class Main extends JFrame implements DeletionListener {
@@ -16,6 +17,12 @@ public class Main extends JFrame implements DeletionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        ImageIcon fileIcon = new ImageIcon("fileicon.png");
+        Image image = fileIcon.getImage();
+        Image resizedImage = image.getScaledInstance(24, 24, java.awt.Image.SCALE_SMOOTH); // Resize to 24x24
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
@@ -28,7 +35,7 @@ public class Main extends JFrame implements DeletionListener {
         panel.add(dir);
 
         direct = new JTextField(300);
-        direct.setBounds(110, 20, 260, 25);
+        direct.setBounds(110, 20, 235, 25);
         direct.setText(saved);
         panel.add(direct);
 
@@ -41,8 +48,9 @@ public class Main extends JFrame implements DeletionListener {
         scrollBar.setBounds(10, 100, 360, 150);
         panel.add(scrollBar);
 
-        select = new JButton("Select");
-        select.setBounds(270, 60, 100, 25);
+        select = new JButton(resizedIcon);
+        select.setBounds(345, 20, 24, 24);
+        select.setToolTipText("Select Directory");
         panel.add(select);
 
         select.addActionListener(e ->
@@ -54,6 +62,7 @@ public class Main extends JFrame implements DeletionListener {
                     if(returnval==JFileChooser.OPEN_DIALOG) {
                         File selectedDirectory = fileChooser.getSelectedFile();
                         selectedDirectoryPath = selectedDirectory.getAbsolutePath();
+                        saved = selectedDirectoryPath;
                         FileHandler.replaceWord(saved);
                         direct.setText(saved);
                     }
